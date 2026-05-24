@@ -1,19 +1,14 @@
-// Package exporter serialises cronscope analysis results into portable
-// output formats for downstream consumption.
+// Package exporter provides serialisation helpers for cronscope reports.
 //
 // Supported formats:
-//   - JSON  — via ExportJSON, suitable for piping into other tools or
-//             storing as artefacts in CI pipelines.
 //
-// Typical usage:
+//   - JSON  – ExportJSON writes a structured JSON document containing job
+//     statistics, failure streaks, and trend data.
 //
-//	entries, _ := parser.ParseLog(rawLog)
-//	stats     := aggregator.Aggregate(entries)
-//	streaks   := aggregator.DetectFailureStreaks(entries, 2)
-//	trend     := aggregator.ComputeTrend(entries, "")
+//   - CSV   – ExportCSV writes a flat comma-separated file with one row per
+//     job, suitable for import into spreadsheets or further processing with
+//     standard Unix tools.
 //
-//	report := exporter.BuildReport(stats, streaks, trend)
-//	if err := exporter.ExportJSON(os.Stdout, report); err != nil {
-//		log.Fatal(err)
-//	}
+// Both exporters accept an io.Writer so callers can direct output to a file,
+// an HTTP response body, or an in-memory buffer as needed.
 package exporter
